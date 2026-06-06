@@ -8,26 +8,23 @@ Tool calling allows Large Language Models (LLMs) to interact with external tools
 
 ## 🏗️ Architecture & Workflow
 
-Here is a sequence diagram illustrating how tool calling is handled in this project:
+Here is a block diagram illustrating the project's execution flow and how tool calling is handled:
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor User
-    participant App as Python Application (main.py)
-    participant LLM as ChatMistralAI (mistral-small-latest)
-    participant Tool as get_current_date Tool
-
-    User->>App: Run main.py ("What is today's date?")
-    App->>LLM: Invoke with User Query & Bound Tools
-    Note over LLM: Model decides to call get_current_date()
-    LLM-->>App: Return AIMessage with tool_calls (ID & Arguments)
-    App->>Tool: Invoke get_current_date with arguments
-    Tool-->>App: Return current date string
-    App->>LLM: Send history: [User Message, AI Tool Call Request, ToolMessage with result]
-    Note over LLM: Model generates final response using the tool's result
-    LLM-->>App: Return final answer (AIMessage)
-    App->>User: Print final response to stdout
+graph TD
+    A([Start: main.py runs]) --> B[Load API Key from .env]
+    B --> C[Initialize ChatMistralAI model]
+    C --> D[Bind get_current_date tool to the model]
+    D --> E[Invoke model with question: 'What is today's date?']
+    E --> F{Does model request tool call?}
+    F -- Yes --> G[Extract tool call details & execute get_current_date()]
+    F -- No --> H[Print response directly]
+    G --> I[Format tool output into a ToolMessage]
+    I --> J[Invoke model again with:<br>1. User Message<br>2. First AI Response<br>3. ToolMessage]
+    J --> K[Model generates final natural language answer]
+    K --> L[Print final answer]
+    L --> M([End])
+    H --> M
 ```
 
 ---
