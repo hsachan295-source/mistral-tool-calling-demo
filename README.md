@@ -12,18 +12,18 @@ Here is a block diagram illustrating the project's execution flow and how tool c
 
 ```mermaid
 graph TD
-    A([Start: main.py runs]) --> B[Load API Key from .env]
-    B --> C[Initialize ChatMistralAI model]
-    C --> D[Bind get_current_date tool to the model]
-    D --> E[Invoke model with question: 'What is today's date?']
-    E --> F{Does model request tool call?}
-    F -- Yes --> G[Extract tool call details & execute get_current_date()]
-    F -- No --> H[Print response directly]
-    G --> I[Format tool output into a ToolMessage]
-    I --> J[Invoke model again with:<br>1. User Message<br>2. First AI Response<br>3. ToolMessage]
-    J --> K[Model generates final natural language answer]
-    K --> L[Print final answer]
-    L --> M([End])
+    A(["Start: main.py runs"]) --> B["Load API Key from .env"]
+    B --> C["Initialize ChatMistralAI model"]
+    C --> D["Bind get_current_date tool to the model"]
+    D --> E["Invoke model with question: What is today's date?"]
+    E --> F{"Does model request tool call?"}
+    F -- Yes --> G["Extract tool call details & execute get_current_date()"]
+    F -- No --> H["Print response directly"]
+    G --> I["Format tool output into a ToolMessage"]
+    I --> J["Invoke model again with:<br>1. User Message<br>2. First AI Response<br>3. ToolMessage"]
+    J --> K["Model generates final natural language answer"]
+    K --> L["Print final answer"]
+    L --> M(["End"])
     H --> M
 ```
 
